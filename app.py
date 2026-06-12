@@ -197,11 +197,20 @@ st.markdown("""
 # ==========================================
 # LOAD MODEL
 # ==========================================
+import os
+
 @st.cache_resource
 def load_model():
     try:
-        model = joblib.load("churn_model.pkl")
+        current_dir = os.path.dirname(__file__)
+        model_path = os.path.join(current_dir, "churn_model.pkl")
+
+        model = joblib.load(model_path)
         return model
+
+    except Exception as e:
+        st.error(f"⚠️ Error loading model: {e}")
+        return None
     except:
         st.error("⚠️ Model file (churn_model.pkl) not found. Please ensure the model is saved in the project directory.")
         return None
